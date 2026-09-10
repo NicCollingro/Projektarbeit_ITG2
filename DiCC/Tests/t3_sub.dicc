@@ -1,0 +1,15 @@
+# T3  Float-Subtraktion, mit Normalisierung nach oben
+# 12.0 - 11.0 muss 1 ergeben und als Mantisse 8 dastehen, nicht 1
+# erwartet:  1 1
+
+float a, b;
+
+main() {
+  a = 1.5;
+  b = 0.5;
+  print(a - b);
+
+  a = 12.5;
+  b = 11.5;
+  print(a - b);
+}

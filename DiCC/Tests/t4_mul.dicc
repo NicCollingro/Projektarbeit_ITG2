@@ -1,0 +1,12 @@
+# T4  Float-Multiplikation
+# 1.5 * 0.5 = 0.75, mal 4 sind 3
+# erwartet:  3
+
+float a, b, c;
+
+main() {
+  a = 1.5;
+  b = 0.5;
+  c = a * b;
+  print(c * 4);
+}

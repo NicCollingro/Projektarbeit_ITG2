@@ -1,0 +1,16 @@
+# T6  Casts ohne Rechnung: i2f bei der Zuweisung, f2i bei print
+# erwartet:  3 2 1
+
+float f;
+uint n;
+
+main() {
+  f = 3;
+  print(f);
+
+  n = 2.75;
+  print(n);
+
+  n = 1.5;
+  print(n);
+}

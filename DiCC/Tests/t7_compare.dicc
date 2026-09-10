@@ -1,0 +1,15 @@
+# T7  Vergleiche auf Floats - brauchen keine Laufzeitroutine,
+# der Byte-Vergleich stimmt im normalisierten Bereich
+# erwartet:  1 0 1 1
+
+float a, b;
+
+main() {
+  a = 0.75;
+  b = 1.5;
+
+  if (a < b) then { print(1); } else { print(0); }
+  if (a > b) then { print(1); } else { print(0); }
+  if (a == 0.75) then { print(1); } else { print(0); }
+  if (a < b && b < 1.75) then { print(1); } else { print(0); }
+}

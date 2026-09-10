@@ -1,0 +1,11 @@
+# T11  0 * x muss die kanonische Null 0x00 liefern, nicht nur den Wert 0
+# a wird nicht zugewiesen und ist damit 0x00
+# erwartet:  1
+
+float a, b, c;
+
+main() {
+  b = 1.5;
+  c = a * b;
+  if (c == 0) then { print(1); } else { print(0); }
+}

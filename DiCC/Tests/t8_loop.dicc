@@ -1,0 +1,15 @@
+# T8  Float in einer Schleife
+# 8 mal 0.25 addieren gibt 2
+# s wird nicht initialisiert: 0x00 ist in beiden Welten die Null
+# erwartet:  2
+
+float s, x;
+uint i;
+
+main() {
+  x = 0.25;
+  for ({ i = 0; }, i < 8, { i = i + 1; }) {
+    s = s + x;
+  }
+  print(s);
+}

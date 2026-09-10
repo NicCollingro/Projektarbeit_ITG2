@@ -1,0 +1,18 @@
+# T9  Arrayindex wird immer nach UINT gewandelt
+# erwartet:  1 1 2
+
+array w[3];
+uint i;
+float f;
+
+main() {
+  for ({ i = 0; }, i < 3, { i = i + 1; }) {
+    w[i] = i;
+  }
+
+  print(w[1]);
+  print(w[1.5]);
+
+  f = 2.5;
+  print(w[f]);
+}

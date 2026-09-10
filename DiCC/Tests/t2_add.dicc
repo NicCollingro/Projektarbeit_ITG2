@@ -1,0 +1,11 @@
+# T2  Float-Addition
+# erwartet:  2 2
+
+float a, b;
+
+main() {
+  a = 1.5;
+  b = 0.5;
+  print(a + b);
+  print(a + 0.5);
+}

@@ -1,0 +1,14 @@
+# T10  Rundung auf 4 Mantissenbits
+#   3.14  ->  3.25      = 13 * 2^-2     3.25 * 4   = 13
+#   0.1   ->  0.1015625 = 13 * 2^-7     0.1  * 128 = 13
+# erwartet:  13 13
+
+float f;
+
+main() {
+  f = 3.14;
+  print(f * 4);
+
+  f = 0.1;
+  print(f * 128);
+}
