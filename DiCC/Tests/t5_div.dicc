@@ -1,5 +1,5 @@
 # T5  Float-Division
-# erwartet:  1.5
+# erwartet:  1.5 intern, print 1
 
 float a;
 main() {
