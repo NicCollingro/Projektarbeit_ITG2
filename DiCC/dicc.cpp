@@ -42,7 +42,7 @@
 //
 // Typregeln (stehen nicht in der Grammatik, macht der Parser uber etype):
 // FLOAT-Format EEEEMMMM, Wert = M * 2^(E-7), ohne Vorzeichen.
-// Ein Literal mit '.' ist FLOAT, ausser sein Wert ist ganzzahlig.
+// Ein Literal mit '.' ist immer FLOAT (auch 3.0), ein Literal ohne '.' ist UINT.
 // Gemischte Operanden: der UINT-Operand wird nach FLOAT gewandelt (i2f),
 // das Ergebnis ist FLOAT.
 // Zuweisung und 'print' wandeln in den Zieltyp (i2f bzw. f2i),
@@ -98,7 +98,7 @@ set<string> arrays;
 
 set<string> floatvars;
 uint8_t encode_float(double val);
-double decimal_literal();
+double decimal_literal(bool &is_float);
 int etype = 0; // Typ des zuletzt erzeugten Werts: 0 = uint, 1 = float
 bool float_add = false;
 bool float_mul = false;
@@ -1009,6 +1009,7 @@ bool def_array() {
   }
   return false;
 }
+
 bool def_const() {
   if (terminal(T_CONST)) {
     do {
@@ -1025,13 +1026,17 @@ bool def_const() {
         err("Error: FLOAT name '" + s + "' already defined");
       if (!terminal('='))
         err("Syntax error CONST missing '='");
-      double val = decimal_literal();
-      if (val != (int)val) { // FLOAT-Konstante
+
+      bool is_float;                          // NEU
+      double val = decimal_literal(is_float); // NEU: Parameter
+      if (is_float) {                         // NEU: statt val != (int)val
+        // FLOAT-Konstante, auch bei ganzzahligem Wert (z.B. 2.0).
+        // floatvars = alle Namen mit Typ FLOAT (Variablen und Konstanten).
         consts[s] = encode_float(val);
         floatvars.insert(s);
       } else {
         consts[s] = (int)val;
-      };
+      }
     } while (terminal(','));
     if (!terminal(';'))
       err("Syntax error CONST missing ';'");
@@ -1039,6 +1044,7 @@ bool def_const() {
   }
   return false;
 }
+
 bool def_main() {
   if (terminal(T_MAIN)) {
     if (!terminal('('))
@@ -1390,15 +1396,16 @@ bool factor() {
     etype = 0;
     break;
   case '0' ... '9': {
-    double val = decimal_literal();
-    if (val != (int)val) {
+    bool is_float;
+    double val = decimal_literal(is_float);
+    if (is_float) { // Literal mit '.', z.B. 3.0 oder 2.5
       CodeGen(ASM_INT, dref(to_string(encode_float(val)), 0));
       etype = 1;
-    } else {
+    } else {        // reiner Integer
       CodeGen(ASM_INT, dref(to_string((int)val), 0));
       etype = 0;
     }
-    break;
+  break;
   }
     /*
     Since we store floats the same way as integers we dont need a new function.
@@ -1499,13 +1506,15 @@ uint8_t encode_float(double val) {
   return best;
 }
 
-double decimal_literal() {
+double decimal_literal(bool &is_float) {
   double z = 0;
+  is_float = false;
   while (isdigit(*cur)) {
     z = 10 * z + (*cur - '0');
     next();
   }
   if (*cur == '.') {
+    is_float = true;
     next();
     double frac = 0.1;
     while (isdigit(*cur)) {

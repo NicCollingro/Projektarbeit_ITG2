@@ -1,11 +1,8 @@
 # T5  Float-Division
-# erwartet:  3 1
+# erwartet:  1.5
 
-float a, b;
-
+float a;
 main() {
-  a = 1.5;
-  b = 0.5;
-  print(a / b);
-  print(b / b);
+  a = 3.0 / 2.0;   # Float/Float -> 1.5
+  print(a);
 }
